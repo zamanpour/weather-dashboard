@@ -1,6 +1,28 @@
 // API key
 const key = "82b2d5f016cf34e6e2c6f965bcac3efe";
 
+// get lat and lon of the searched city and call showWeather()
+function showInfo(placeName) {
+
+    let lonData, latData;
+    let queryURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + placeName + '&limit=1&appid=' + key;
+    console.log(queryURL);
+    $.ajax({
+        url: queryURL,
+        method: 'GET'
+    })
+        .then(function (response) {
+            //get lat & lon of city
+            lonData = response[0].lon;
+            latData = response[0].lat;
+            console.log(lonData + '  ' + latData);
+        })
+        .then(function () {
+            showWeather(placeName, latData, lonData);
+        });
+
+}
+
 // function to show current weather and 5 day forecast of the searched city
 function showWeather(placeName, lat, lon) {
     let queryURL = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&" + "lon=" + lon + "&units=metric&appid=" + key;
@@ -63,68 +85,41 @@ function showWeather(placeName, lat, lon) {
 // function to record the search history
 function recordSearch(cityName) {
     //This is the function to record the search history.
-    let cityArr = JSON.parse(localStorage.getItem('cityHistory'));
+    let cityArray = JSON.parse(localStorage.getItem('cityHistory'));
 
 
-    if (cityArr === null) { //No search history
-        cityArr = [];
-        cityArr.unshift(cityName);
-        localStorage.setItem('cityHistory', JSON.stringify(cityArr));
+    if (cityArray === null) { //No search history
+        cityArray = [];
+        cityArray.unshift(cityName);
+        localStorage.setItem('cityHistory', JSON.stringify(cityArray));
         const history = $('<button>').text(cityName);
         history.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
         $('#search-history').prepend(history);
 
-    } else if (cityArr.includes(cityName)) { //exist city
-        console.log(('This city is in the search history'));
+    } else if (cityArray.includes(cityName)) { //exist city
+        console.log(('This city is in the history'));
     } else { //add city to prev history
         console.log(('This is a new city'));
-        cityArr.unshift(cityName);
-        localStorage.setItem('cityHistory', JSON.stringify(cityArr));
+        cityArray.unshift(cityName);
+        localStorage.setItem('cityHistory', JSON.stringify(cityArray));
         const history = $('<button>').text(cityName);
         history.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
         $('#search-history').prepend(history);
     }
-}
-
-var invalidSearch = false;
-// function to show the informations of the searched city
-function showInfo(placeName) {
-
-    let lonData, latData;
-    let queryURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + placeName + '&limit=1&appid=' + key;
-    console.log(queryURL);
-    $.ajax({
-        url: queryURL,
-        method: 'GET'
-    })
-        .then(function (response) {
-            //get lat & lon of city
-            lonData = response[0].lon;
-            latData = response[0].lat;
-            console.log(lonData + '  ' + latData);
-        })
-        .then(function () {
-            showWeather(placeName, latData, lonData);
-        });
-    if (!invalidSearch) {
-
-    }
-
 }
 
 // function to initialize the webpage
 function initPage() {
-    let cityArr = JSON.parse(localStorage.getItem('cityHistory'));
-    // console.log(cityArr);
-    if (cityArr != null) {
+    let cityArray = JSON.parse(localStorage.getItem('cityHistory'));
+    if (cityArray != null) {
         // console.log('City array is not empty');
-        cityArr.forEach(cityName => {
+        cityArray.forEach(cityName => {
             const history = $('<button>').text(cityName);
             history.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
             $('#search-history').append(history);
         })
         // show the latest search result
-        showInfo(cityArr[0]);
+        showInfo(cityArray[0]);
     }
 }
 
@@ -151,10 +146,8 @@ $(document).ready(function () {
     })
 
     // event listener for the history buttons
-
     $('#search-history').on('click', 'button', function (event) {
         event.preventDefault();
-        // console.log(event.target.innerText);
         cityName = event.target.innerText.trim();
 
         showInfo(cityName);
