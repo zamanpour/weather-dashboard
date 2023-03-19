@@ -17,13 +17,13 @@ function showWeather(placeName, lat, lon) {
         let todayDate = moment().format("DD/MM/YYYY");
         let todayIcon = response.list[0].weather[0].icon;
         let todayIconUrl = 'https://openweathermap.org/img/wn/' + todayIcon + '.png';
-        const dateEl = $('<h3>').text(placeName + ' (' + todayDate + ')');
-        const iconEl = $('<img>').attr('src', todayIconUrl).addClass('weatherIcon');
-        dateEl.append(iconEl);
+        const date1 = $('<h3>').text(placeName + ' (' + todayDate + ')');
+        const icon1 = $('<img>').attr('src', todayIconUrl).addClass('weatherIcon');
+        date1.append(icon1);
         const tempDiv = $('<p>').text("Temperature: " + response.list[0].main.temp + " °C");
         const humidityDiv = $('<p>').text("Humidity: " + response.list[0].main.humidity + " %");
         const windDiv = $('<p>').text("Wind: " + response.list[0].wind.speed + " KPH");
-        todayCardDiv.append(dateEl, tempDiv, humidityDiv, windDiv);
+        todayCardDiv.append(date1, tempDiv, humidityDiv, windDiv);
         $('#today').append(todayCardDiv)
 
         const daysTitleDiv = $('<div>').addClass('col-12');
@@ -48,11 +48,11 @@ function showWeather(placeName, lat, lon) {
 
                 //Create cards for each day
                 const cardsDiv = $('<div>').addClass('card col m-2 text-white bg-info text-left py-2');
-                const dateEl = $('<h5>').text(dateToday);
-                const iconEl = $('<img>').attr('src', iconUrl).addClass('weatherIcon');
-                const tempEl = $('<p>').text('Temp: ' + temp + ' °C');
-                const humidityEl = $('<p>').text('Humidity: ' + humidity + '%');
-                cardsDiv.append(dateEl, iconEl, tempEl, humidityEl);
+                const dates = $('<h5>').text(dateToday);
+                const icons = $('<img>').attr('src', iconUrl).addClass('weatherIcon');
+                const temps = $('<p>').text('Temp: ' + temp + ' °C');
+                const humidities = $('<p>').text('Humidity: ' + humidity + '%');
+                cardsDiv.append(dates, icons, temps, humidities);
                 $('#forecast').append(cardsDiv);
 
             }
@@ -70,9 +70,9 @@ function recordSearch(cityName) {
         cityArr = [];
         cityArr.unshift(cityName);
         localStorage.setItem('cityHistory', JSON.stringify(cityArr));
-        const historyEl = $('<button>').text(cityName);
-        historyEl.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
-        $('#search-history').prepend(historyEl);
+        const history = $('<button>').text(cityName);
+        history.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
+        $('#search-history').prepend(history);
 
     } else if (cityArr.includes(cityName)) { //exist city
         console.log(('This city is in the search history'));
@@ -80,9 +80,9 @@ function recordSearch(cityName) {
         console.log(('This is a new city'));
         cityArr.unshift(cityName);
         localStorage.setItem('cityHistory', JSON.stringify(cityArr));
-        const historyEl = $('<button>').text(cityName);
-        historyEl.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
-        $('#search-history').prepend(historyEl);
+        const history = $('<button>').text(cityName);
+        history.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
+        $('#search-history').prepend(history);
     }
 }
 
@@ -119,9 +119,9 @@ function initPage() {
     if (cityArr != null) {
         // console.log('City array is not empty');
         cityArr.forEach(cityName => {
-            const historyEl = $('<button>').text(cityName);
-            historyEl.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
-            $('#search-history').append(historyEl);
+            const history = $('<button>').text(cityName);
+            history.attr({ type: 'button', class: 'btn btn-secondary btn-lg btn-block' });
+            $('#search-history').append(history);
         })
         // show the latest search result
         showInfo(cityArr[0]);
