@@ -112,62 +112,6 @@ function showInfo(placeName) {
 
 }
 
-//function show related news
-function updatePage(NYTData) {
-    // Get from the form the number of results to display
-    // API doesn't have a "limit" parameter, so we have to do this ourselves
-    var numArticles = 5;
-
-    // Loop through and build elements for the defined number of articles
-    for (var i = 0; i < numArticles; i++) {
-        // Get specific article info for current index
-        var article = NYTData.response.docs[i];
-
-        // Increase the articleCount (track article # - starting at 1)
-        var articleCount = i + 1;
-
-        // Create the  list group to contain the articles and add the article content for each
-        var $articleList = $("<ul>");
-        $articleList.addClass("list-group");
-
-        // Add the newly created element to the DOM
-        $("#news").append($articleList);
-
-        // If the article has a headline, log and append to $articleList
-        var headline = article.headline;
-        var $articleListItem = $("<li class='list-group-item articleHeadline'>");
-
-        if (headline && headline.main) {
-            //console.log(headline.main);
-            $articleListItem.append(
-                "<a href='" + article.web_url + "' target='_blank'><h2> " +
-                headline.main +
-                "</h2></a>"
-            );
-        }
-
-        // Log section, and append to document if exists
-        var section = article.section_name;
-        //console.log(article.section_name);
-        if (section) {
-            $articleListItem.append("<h3>Section: " + section + "</h3>");
-        }
-
-        // Log published date, and append to document if exists
-        var pubDate = article.pub_date;
-
-        console.log(moment(pubDate).format('DD/MM/YYYY, HH:MM A'));
-        //console.log(article.pub_date);
-        if (pubDate) {
-            $articleListItem.append("<h4>Publication Time: " + moment(pubDate).format('DD/MM/YYYY, HH:MM A') + "</h4>");
-        }
-
-
-        // Append the article
-        $articleList.append($articleListItem);
-    }
-}
-
 // function to initialize the webpage
 function initPage() {
     let cityArr = JSON.parse(localStorage.getItem('cityHistory'));
