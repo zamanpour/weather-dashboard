@@ -91,7 +91,7 @@ var invalidSearch = false;
 function showInfo(placeName) {
 
     let lonData, latData;
-    let queryURL = 'http://api.openweathermap.org/geo/1.0/direct?q=' + placeName + '&limit=1&appid=' + key;
+    let queryURL = 'https://api.openweathermap.org/geo/1.0/direct?q=' + placeName + '&limit=1&appid=' + key;
     console.log(queryURL);
     $.ajax({
         url: queryURL,
