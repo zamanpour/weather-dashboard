@@ -11,7 +11,7 @@ This app help you to plan for your travel in next days.
 You can search the "City name" you want to travel to and check the weather for 5+1 days
 
 - You can visit the page in: https://zamanpour.github.io/weather-dashboard/
-- It show same as:
+- It is same as:
 <img src="assets/Weather-Dashboard.png">
 
 ## Features
